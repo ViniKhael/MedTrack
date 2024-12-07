@@ -1,8 +1,5 @@
-
 const int PIN_BUZZER = 5;
-
 const int PIN_PIR = 23;
-
 const int PIN_BUTTON = 14;
 // #define PIN_BUTTON 14  <- antiga       
 
@@ -22,8 +19,8 @@ void setup() {
   pinMode(PIN_TRIGGER, OUTPUT);    
   pinMode(PIN_ECHO, INPUT);        
 
-  Serial.println("Sistema de Monitoramento de Dispenser Iniciado!");
-  Serial.print("Sensor de movimento Ready!\n");
+  //Serial.println("Sistema de Monitoramento de Dispenser Iniciado!");
+  //Serial.print("Sensor de movimento Ready!\n");
 }
 
 void loop() {
@@ -40,7 +37,7 @@ void loop() {
   // Calcula a distância em centímetros
   distancia = duration * 0.034 / 2;
 
-  if (distancia > 0 && distancia <= 5){
+  if (distancia > 0 && distancia <= 8){
     Serial.println("Pessoa detectada próxima ao dispenser");
 
     // Verifica se o botão foi pressionado e está detectando movimento atraves do sensor PIR para simular o uso do dispenser
