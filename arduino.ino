@@ -62,20 +62,3 @@ void loop() {
   delay(100);  // Aguarda um pouco antes da próxima verificação
 
 }
-
-void loop() {
-
-  if () {  //detecta até 20 cm
-
-    if (digitalRead(PIN_BUTTON) == LOW) { // LOW indica que o botão foi pressionado
-      if (digitalRead(PIN_BUTTON) == LOW) {
-        contador++; // Incrementa o contador de usos do dispenser
-        Serial.print("Dispenser utilizado. Total de usos: ");
-        Serial.println(contador);
-        
-        while (digitalRead(PIN_BUTTON) == LOW);
-      }
-    }
-  }
-
-}
