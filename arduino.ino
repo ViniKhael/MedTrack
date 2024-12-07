@@ -1,60 +1,65 @@
 const int PIN_BUZZER = 5;
 const int PIN_PIR = 23;
 const int PIN_BUTTON = 14;
-// #define PIN_BUTTON 14  <- antiga       
-
-// pins do sensor ultrassonico
-const int PIN_TRIGGER = 13;  
+const int PIN_TRIGGER = 13;
 const int PIN_ECHO = 12;
 
-int contador=0;
-long duration;             
-int distancia;             
+int contador = 0;
+long duration;
+int distancia;
+bool buttonState = HIGH; // Estado anterior do botão
+bool pirState = LOW;     // Estado anterior do PIR
 
 void setup() {
-  Serial.begin(115200); /* Define baud rate for serial communication */
-  pinMode(PIN_BUZZER,OUTPUT);
+  Serial.begin(115200); // Comunicação serial
+  pinMode(PIN_BUZZER, OUTPUT);
   pinMode(PIN_PIR, INPUT);
-  pinMode(PIN_BUTTON,INPUT_PULLUP);
-  pinMode(PIN_TRIGGER, OUTPUT);    
-  pinMode(PIN_ECHO, INPUT);        
+  pinMode(PIN_BUTTON, INPUT_PULLUP);
+  pinMode(PIN_TRIGGER, OUTPUT);
+  pinMode(PIN_ECHO, INPUT);
 
-  //Serial.println("Sistema de Monitoramento de Dispenser Iniciado!");
-  //Serial.print("Sensor de movimento Ready!\n");
+  Serial.println("Sistema de Monitoramento de Dispenser Iniciado!");
+  Serial.println("Sensor de movimento Ready!");
 }
 
 void loop() {
-  // Gera um pulso de 10 microssegundos no pino Trigger para iniciar a medição
+  // Medição de distância com sensor ultrassônico
   digitalWrite(PIN_TRIGGER, LOW);
   delayMicroseconds(2);
   digitalWrite(PIN_TRIGGER, HIGH);
   delayMicroseconds(10);
   digitalWrite(PIN_TRIGGER, LOW);
 
-  // Lê a duração do pulso no pino Echo
   duration = pulseIn(PIN_ECHO, HIGH);
-  
-  // Calcula a distância em centímetros
-  distancia = duration * 0.034 / 2;
+  distancia = duration * 0.034 / 2; // Conversão para centímetros
 
-  if (distancia > 0 && distancia <= 8){
-    Serial.println("Pessoa detectada próxima ao dispenser");
+  if (distancia > 0 && distancia <= 20) {
+    Serial.print("Pessoa detectada a ");
+    Serial.print(distancia);
+    Serial.println(" cm do dispenser.");
 
-    // Verifica se o botão foi pressionado e está detectando movimento atraves do sensor PIR para simular o uso do dispenser
-    if ( (digitalRead(PIN_PIR) == HIGH) && (digitalRead(PIN_BUTTON) == LOW)) {
-                delay(50); // debounce 
-
-                digitalWrite(PIN_BUZZER,HIGH);
-                contador++; // Incrementa o contador de usos do dispenser
-                Serial.print("Dispenser utilizado. Total de usos: ");
-                Serial.println(contador);
-                // Aguarda até que o botão seja solto
-                while (digitalRead(PIN_BUTTON) == LOW);
-            } 
-    else{
-        digitalWrite(PIN_BUZZER,LOW);
+    // Verifica se há movimento detectado pelo PIR
+    pirState = digitalRead(PIN_PIR);
+    if (pirState == HIGH) {
+      Serial.println("Movimento detectado pelo sensor PIR.");
     }
 
+    // Verifica se o botão foi pressionado
+    if (digitalRead(PIN_BUTTON) == LOW && buttonState == HIGH) {
+      delay(50); // Debounce
+      buttonState = LOW; // Atualiza o estado do botão
+      contador++;
+      digitalWrite(PIN_BUZZER, HIGH); // Ativa o buzzer
+      Serial.print("Dispenser utilizado. Total de usos: ");
+      Serial.println(contador);
+
+      // Aguarda o botão ser liberado
+      while (digitalRead(PIN_BUTTON) == LOW);
+    } else if (digitalRead(PIN_BUTTON) == HIGH) {
+      buttonState = HIGH; // Atualiza o estado do botão
+      digitalWrite(PIN_BUZZER, LOW); // Desativa o buzzer
+    }
   }
-  delay(100);  // Aguarda um pouco antes da próxima verificação
+
+  delay(100); // Aguarda antes da próxima leitura
 }
