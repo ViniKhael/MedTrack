@@ -31,7 +31,7 @@ Este projeto utiliza um Arduino para monitorar o uso de um dispenser, detectando
 
 ## Código
 
-O código utilizado está no arquivo `dispenser_monitor.ino`. Ele realiza as seguintes ações:
+O código utilizado está no arquivo `/arduino.ino`. Ele realiza as seguintes ações:
 1. Mede a distância com o sensor ultrassônico.
 2. Verifica a detecção de movimento com o sensor PIR.
 3. Registra uma utilização ao pressionar o botão e emite um som com o buzzer.
@@ -58,17 +58,3 @@ Para facilitar a depuração, o código exibe no Serial Monitor:
 
 - Adicionar um display para exibir o número de utilizações diretamente no dispositivo.
 - Incorporar conectividade IoT para envio de dados em tempo real para um servidor ou aplicativo.
-
----
-
-**Autores**: Desenvolvido com base em solicitações e orientações fornecidas.
-"""
-
-# Caminho do arquivo a ser salvo
-file_path = "/mnt/data/README.md"
-
-# Salvando o arquivo
-with open(file_path, "w") as file:
-    file.write(readme_content)
-
-file_path
