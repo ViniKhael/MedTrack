@@ -33,7 +33,7 @@ void loop() {
   duration = pulseIn(PIN_ECHO, HIGH);
   distancia = duration * 0.034 / 2; // Conversão para centímetros
 
-  if (distancia > 0 && distancia <= 10) {
+  if (distancia > 0 && distancia <= 20) {
     Serial.print("Pessoa detectada a ");
     Serial.print(distancia);
     Serial.println(" cm do dispenser.");
