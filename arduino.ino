@@ -57,5 +57,4 @@ void loop() {
 
   }
   delay(100);  // Aguarda um pouco antes da próxima verificação
-
 }
